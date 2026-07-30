@@ -719,13 +719,51 @@ with tab_l5:
     
     with col_d1:
         st.markdown("#### 🎯 Decision Priority Matrix")
-        matrix_data = [
-            {"Area": "Harga Pokok Penjualan (COGS)", "Impact": "Very High", "Urgency": "Critical", "Status": "🔴 CRITICAL", "Action Plan": "Audit efisiensi bahan baku & negosiasi supplier."},
-            {"Area": "Pengelolaan Piutang (AR)", "Impact": "High", "Urgency": "High", "Status": "🔴 CRITICAL", "Action Plan": "Intensifkan penagihan piutang >30 hari & ketat kriteria kredit."},
-            {"Area": "Target Revenue", "Impact": "High", "Urgency": "Medium", "Status": "🟡 HIGH", "Action Plan": "Evaluasi strategi sales dan dorong produk margin tinggi."},
-            {"Area": "Biaya Operasional (OpEx)", "Impact": "Medium", "Urgency": "Medium", "Status": "🟡 MEDIUM", "Action Plan": "Pengetatan perjalanan dinas dan beban administrasi."}
-        ]
-        st.table(pd.DataFrame(matrix_data))
+        
+        priority_table_html = """
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th style="text-align:left;">Area Fokus</th>
+                    <th>Impact</th>
+                    <th>Urgency</th>
+                    <th>Status</th>
+                    <th style="text-align:left;">Action Plan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:left;"><b>🏭 Harga Pokok Penjualan (COGS)</b></td>
+                    <td>Very High</td>
+                    <td>Critical</td>
+                    <td><span class="pill-red">🔴 CRITICAL</span></td>
+                    <td style="text-align:left;">Audit efisiensi bahan baku & negosiasi supplier.</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;"><b>📥 Pengelolaan Piutang (AR)</b></td>
+                    <td>High</td>
+                    <td>High</td>
+                    <td><span class="pill-red">🔴 CRITICAL</span></td>
+                    <td style="text-align:left;">Intensifkan penagihan piutang >30 hari & ketat kriteria kredit.</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;"><b>💵 Target Revenue</b></td>
+                    <td>High</td>
+                    <td>Medium</td>
+                    <td><span class="pill-amber">🟡 HIGH</span></td>
+                    <td style="text-align:left;">Evaluasi strategi sales dan dorong produk margin tinggi.</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left;"><b>🏢 Biaya Operasional (OpEx)</b></td>
+                    <td>Medium</td>
+                    <td>Medium</td>
+                    <td><span class="pill-amber">🟡 MEDIUM</span></td>
+                    <td style="text-align:left;">Pengetatan perjalanan dinas dan beban administrasi.</td>
+                </tr>
+            </tbody>
+        </table>
+        """
+        st.html(priority_table_html)
 
     with col_d2:
         st.markdown("#### ⚡ What-If Sensitivity Simulation")
