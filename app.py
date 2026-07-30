@@ -6,206 +6,183 @@ import plotly.graph_objects as go
 import io
 
 # ==========================================
-# 1. PAGE CONFIG & LIGHT CORPORATE STYLING
+# 1. PAGE CONFIG & POWER BI / TABLEAU ENTERPRISE STYLING
 # ==========================================
 st.set_page_config(
-    page_title="Executive Financial Analytics & Recommendations",
-    page_icon="📊",
+    page_title="Executive Financial Decision Support Platform",
+    page_icon="🏛️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling (Template.net Inspired Clean Executive Light Theme)
+# Custom Styling (Power BI Clean White Executive Theme)
 st.markdown("""
 <style>
+    /* Global Canvas */
     .stApp {
-        background-color: #f8fafc;
+        background-color: #f1f5f9;
         color: #0f172a;
         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
     
+    /* Clean Sidebar */
     [data-testid="stSidebar"] {
         background-color: #ffffff;
-        border-right: 1px solid #e2e8f0;
+        border-right: 1px solid #cbd5e1;
     }
-    
-    .excel-card {
-        background-color: #ffffff;
+
+    /* Executive Hero Header */
+    .hero-banner {
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        color: #ffffff;
+        border-radius: 14px;
+        padding: 24px 28px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+        margin-bottom: 24px;
+        border-left: 6px solid #38bdf8;
+    }
+    .hero-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-bottom: 4px;
+        color: #ffffff;
+    }
+    .hero-sub {
+        font-size: 0.95rem;
+        color: #93c5fd;
+        font-weight: 500;
+    }
+
+    /* Premium Power BI Container Cards */
+    .pbi-card {
+        background: #ffffff;
         border-radius: 12px;
         padding: 20px;
         border: 1px solid #cbd5e1;
         box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
         margin-bottom: 20px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .pbi-card:hover {
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
     }
 
-    .kpi-wrapper {
+    /* Hero Primary Metric Cards (Revenue, Profit, Cash) */
+    .hero-kpi-card {
         background: #ffffff;
         border-radius: 12px;
+        padding: 18px 22px;
         border: 1px solid #cbd5e1;
-        padding: 16px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.04);
         margin-bottom: 16px;
         position: relative;
         overflow: hidden;
     }
-    .kpi-accent-blue { border-top: 5px solid #2563eb; }
-    .kpi-accent-green { border-top: 5px solid #16a34a; }
-    .kpi-accent-amber { border-top: 5px solid #d97706; }
-    .kpi-accent-navy { border-top: 5px solid #1e3a8a; }
+    .hero-kpi-emerald { border-top: 6px solid #10b981; }
+    .hero-kpi-indigo { border-top: 6px solid #6366f1; }
+    .hero-kpi-purple { border-top: 6px solid #a855f7; }
 
-    .kpi-label {
-        font-size: 0.78rem;
+    .kpi-title {
+        font-size: 0.8rem;
         font-weight: 700;
         color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: 4px;
     }
-    .kpi-val {
-        font-size: 1.8rem;
+    .kpi-big-val {
+        font-size: 2.1rem;
         font-weight: 800;
         color: #0f172a;
         margin: 4px 0;
         letter-spacing: -0.02em;
     }
-    .kpi-pill-pos {
-        background-color: #dcfce7;
-        color: #15803d;
-        padding: 3px 10px;
-        border-radius: 20px;
-        font-size: 0.78rem;
-        font-weight: 700;
-        display: inline-block;
+
+    /* Custom Modern Rounded Pill Cards */
+    .metric-card-box {
+        background-color: #ffffff;
+        border-radius: 18px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 125px;
     }
-    .kpi-pill-neg {
-        background-color: #fee2e2;
-        color: #b91c1c;
-        padding: 3px 10px;
-        border-radius: 20px;
-        font-size: 0.78rem;
-        font-weight: 700;
-        display: inline-block;
+    
+    .card-border-blue { border: 4px solid #93c5fd; }
+    .card-border-green { border: 4px solid #a7f3d0; }
+    .card-border-amber { border: 4px solid #fde68a; }
+    .card-border-purple { border: 4px solid #ddd6fe; }
+
+    .card-metric-title {
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 6px;
+    }
+    .card-metric-val {
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 2px 0;
+        letter-spacing: -0.02em;
     }
 
-    /* Clean Styled HTML Table */
-    .table-container {
-        background: #ffffff;
-        border-radius: 10px;
-        padding: 12px;
-        border: 1px solid #cbd5e1;
-        overflow-x: auto;
-    }
+    /* Storytelling & AR AP Modern Banner Cards */
+    .story-box-blue { background-color: #f0f9ff; border-left: 5px solid #0284c7; color: #0369a1; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.93rem; line-height: 1.5; }
+    .story-box-indigo { background-color: #f5f3ff; border-left: 5px solid #7c3aed; color: #5b21b6; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.93rem; line-height: 1.5; }
+    .story-box-green { background-color: #f0fdf4; border-left: 5px solid #16a34a; color: #166534; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.93rem; line-height: 1.5; }
+    .story-box-amber { background-color: #fffbeb; border-left: 5px solid #f59e0b; color: #92400e; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 0.93rem; line-height: 1.5; }
+
+    /* Status Pills */
+    .pill-green { background-color: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; }
+    .pill-red { background-color: #fee2e2; color: #b91c1c; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; }
+    .pill-amber { background-color: #fef3c7; color: #b45309; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; }
+
+    /* Custom Executive Table */
     .custom-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.86rem;
+        font-size: 0.88rem;
         text-align: center;
     }
     .custom-table th {
-        background-color: #1e3a8a;
+        background-color: #0f172a;
         color: #ffffff;
-        padding: 10px 8px;
-        border: 1px solid #1e40af;
-        font-weight: 600;
-    }
-    .custom-table th.focus-header {
-        background-color: #b45309 !important;
-        border-color: #92400e !important;
+        padding: 12px 10px;
+        border: 1px solid #1e293b;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
     }
     .custom-table td {
-        padding: 8px 6px;
+        padding: 10px;
         border-bottom: 1px solid #e2e8f0;
         color: #334155;
-    }
-    .custom-table td.focus-cell {
-        background-color: #fffbeb;
-        font-weight: 600;
     }
     .custom-table tr:hover td {
         background-color: #f8fafc;
     }
 
-    /* Sparkbars */
-    .spark-bg {
-        background-color: #e2e8f0;
-        width: 45px;
-        height: 10px;
-        border-radius: 3px;
-        display: inline-block;
-        vertical-align: middle;
-    }
-    .spark-fill-purple {
-        background-color: #2563eb;
-        height: 100%;
-        border-radius: 3px;
-    }
-    .spark-fill-red {
-        background-color: #dc2626;
-        height: 100%;
-        border-radius: 3px;
-    }
+    /* Early Warning Alert Boxes */
+    .ews-card-red { background-color: #fef2f2; border-left: 5px solid #ef4444; color: #991b1b; padding: 14px 18px; border-radius: 8px; margin-bottom: 10px; font-size: 0.92rem; font-weight: 500; }
+    .ews-card-amber { background-color: #fffbeb; border-left: 5px solid #f59e0b; color: #92400e; padding: 14px 18px; border-radius: 8px; margin-bottom: 10px; font-size: 0.92rem; font-weight: 500; }
+    .ews-card-green { background-color: #f0fdf4; border-left: 5px solid #22c55e; color: #166534; padding: 14px 18px; border-radius: 8px; margin-bottom: 10px; font-size: 0.92rem; font-weight: 500; }
 
-    /* Distinct Alert Cards */
-    .rec-box-blue {
-        background-color: #f0f9ff;
-        border-left: 5px solid #0284c7;
-        color: #0369a1;
-        padding: 14px 18px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        font-size: 0.93rem;
-        line-height: 1.5;
-    }
-    .rec-box-amber {
-        background-color: #fffbeb;
-        border-left: 5px solid #f59e0b;
-        color: #92400e;
-        padding: 14px 18px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        font-size: 0.93rem;
-        line-height: 1.5;
-    }
-    .rec-box-purple {
-        background-color: #faf5ff;
-        border-left: 5px solid #a855f7;
-        color: #6b21a8;
-        padding: 14px 18px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        font-size: 0.93rem;
-        line-height: 1.5;
-    }
-    .rec-box-emerald {
-        background-color: #f0fdf4;
-        border-left: 5px solid #10b981;
-        color: #065f46;
-        padding: 14px 18px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        font-size: 0.93rem;
-        line-height: 1.5;
-    }
-    .rec-box-teal {
-        background-color: #f0fdfa;
-        border-left: 5px solid #14b8a6;
-        color: #115e59;
-        padding: 14px 18px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        font-size: 0.93rem;
-        line-height: 1.5;
-    }
-
+    /* Action Buttons */
     div.stButton > button:first-child {
-        background-color: #dc2626 !important;
+        background-color: #0f172a !important;
         color: white !important;
         border: none !important;
         font-weight: bold !important;
         font-size: 15px !important;
-        padding: 10px 18px !important;
+        padding: 10px 20px !important;
         border-radius: 8px !important;
-        box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
     @media print {
@@ -216,72 +193,46 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 2. DATA GENERATOR & SAMPLE EXCEL
+# 2. DATA GENERATOR WITH MULTI-DIVISION SUPPORT
 # ==========================================
 def generate_sample_dataset():
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Juni', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
-    years = [2025, 2026]
+    divisions = ['Division Alpha', 'Division Beta', 'Division Gamma']
     data = []
-    
     np.random.seed(42)
-    for y in years:
-        for m_idx, m in enumerate(months):
-            if m == 'Juni' and y == 2026:
-                rev_act, rev_bud = 10000, 8500
-                cogs_act, cogs_bud = 7500, 5000
-                opex_act, opex_bud = 1200, 800
-                net_act = 1300
-                cash, ar, ap, ca, cl = 4299, 1828, 977, 6000, 1500
-            elif m == 'Mei' and y == 2026:
-                rev_act, rev_bud = 25000, 35000
-                cogs_act, cogs_bud = 15000, 25000
-                opex_act, opex_bud = 1000, 900
-                net_act = 9000
-                cash, ar, ap, ca, cl = 4480, 1067, 1200, 6100, 1600
-            elif m == 'Mar' and y == 2026:
-                rev_act, rev_bud = 17924, 16298
-                cogs_act, cogs_bud = 10754, 9452
-                opex_act, opex_bud = 2150, 1629
-                net_act = 5020
-                cash, ar, ap, ca, cl = 4100, 1100, 1150, 5900, 1550
-            elif m == 'Feb' and y == 2026:
-                rev_act, rev_bud = 13996, 14035
-                cogs_act, cogs_bud = 8397, 8140
-                opex_act, opex_bud = 1679, 1403
-                net_act = 3920
-                cash, ar, ap, ca, cl = 3900, 1150, 1100, 5800, 1500
-            else:
-                rev_act = int(np.random.uniform(12000, 22000))
-                rev_bud = int(rev_act * np.random.uniform(0.9, 1.1))
-                cogs_act = int(rev_act * 0.6)
-                cogs_bud = int(rev_bud * 0.58)
-                opex_act = int(rev_act * 0.12)
-                opex_bud = int(rev_bud * 0.10)
-                net_act = rev_act - cogs_act - opex_act
-                cash = int(rev_act * 0.4)
-                ar = int(rev_act * 0.1)
-                ap = int(cogs_act * 0.15)
-                ca = cash + ar + int(rev_act * 0.2)
-                cl = ap + int(rev_act * 0.1)
-            
-            data.append({
-                'Tahun': y,
-                'Bulan': m,
-                'Bulan_Num': m_idx + 1,
-                'Revenue_Actual': rev_act,
-                'Revenue_Budget': rev_bud,
-                'COGS_Actual': cogs_act,
-                'COGS_Budget': cogs_bud,
-                'OpEx_Actual': opex_act,
-                'OpEx_Budget': opex_bud,
-                'Net_Profit_Actual': net_act,
-                'Net_Profit_Budget': rev_bud - cogs_bud - opex_bud,
-                'Cash_Balance': cash,
-                'Accounts_Receivable': ar,
-                'Accounts_Payable': ap,
-                'Total_Current_Assets': ca,
-                'Total_Current_Liabilities': cl
-            })
+    
+    for div in divisions:
+        div_mult = 1.0 if div == 'Division Alpha' else 0.6 if div == 'Division Beta' else 0.4
+        for y in [2025, 2026]:
+            for m_idx, m in enumerate(months):
+                if m == 'Juni' and y == 2026: 
+                    rev_act, rev_bud, cogs_act, cogs_bud, opex_act, opex_bud = 10000*div_mult, 8500*div_mult, 7500*div_mult, 5000*div_mult, 1200*div_mult, 800*div_mult
+                    cash, ar, ap, ca, cl, inv = 4299*div_mult, 1828*div_mult, 977*div_mult, 6000*div_mult, 1500*div_mult, 1000*div_mult
+                elif m == 'Mei' and y == 2026: 
+                    rev_act, rev_bud, cogs_act, cogs_bud, opex_act, opex_bud = 25000*div_mult, 35000*div_mult, 15000*div_mult, 25000*div_mult, 1000*div_mult, 900*div_mult
+                    cash, ar, ap, ca, cl, inv = 4480*div_mult, 1067*div_mult, 1200*div_mult, 6100*div_mult, 1600*div_mult, 1200*div_mult
+                elif m == 'Mar' and y == 2026: 
+                    rev_act, rev_bud, cogs_act, cogs_bud, opex_act, opex_bud = 17924*div_mult, 16298*div_mult, 10754*div_mult, 9452*div_mult, 2150*div_mult, 1629*div_mult
+                    cash, ar, ap, ca, cl, inv = 4100*div_mult, 1100*div_mult, 1150*div_mult, 5900*div_mult, 1550*div_mult, 1100*div_mult
+                else:
+                    rev_act = int(np.random.uniform(12000, 22000) * div_mult)
+                    rev_bud = int(rev_act * np.random.uniform(0.9, 1.1))
+                    cogs_act, cogs_bud = int(rev_act * 0.6), int(rev_bud * 0.58)
+                    opex_act, opex_bud = int(rev_act * 0.12), int(rev_bud * 0.10)
+                    cash = int(rev_act * 0.4); ar = int(rev_act * 0.15); ap = int(cogs_act * 0.15)
+                    inv = int(rev_act * 0.1); ca = cash + ar + inv; cl = ap + 1000*div_mult
+                
+                data.append({
+                    'Divisi': div, 'Tahun': y, 'Bulan': m, 'Bulan_Num': m_idx + 1,
+                    'Revenue_Actual': rev_act, 'Revenue_Budget': rev_bud,
+                    'COGS_Actual': cogs_act, 'COGS_Budget': cogs_bud,
+                    'OpEx_Actual': opex_act, 'OpEx_Budget': opex_bud,
+                    'Net_Profit_Actual': rev_act - cogs_act - opex_act,
+                    'Net_Profit_Budget': rev_bud - cogs_bud - opex_bud,
+                    'Cash_Balance': cash, 'Accounts_Receivable': ar,
+                    'Accounts_Payable': ap, 'Inventory': inv,
+                    'Total_Current_Assets': ca, 'Total_Current_Liabilities': cl
+                })
     return pd.DataFrame(data)
 
 def convert_df_to_excel(df):
@@ -293,7 +244,7 @@ def convert_df_to_excel(df):
 # ==========================================
 # 3. SIDEBAR CONTROLS & SELECTION
 # ==========================================
-st.sidebar.markdown("### ⚙️ Control Center")
+st.sidebar.markdown("### 🏛️ C-EDSS Control")
 
 sample_df = generate_sample_dataset()
 
@@ -306,503 +257,572 @@ st.sidebar.download_button(
 )
 
 uploaded_file = st.sidebar.file_uploader("📂 Upload File Excel Laporan", type=["xlsx", "xls"])
-df = pd.read_excel(uploaded_file) if uploaded_file else sample_df
+raw_df = pd.read_excel(uploaded_file) if uploaded_file else sample_df
+
+st.sidebar.markdown("---")
+st.sidebar.markdown("### 🏢 Filter Unit Bisnis / Divisi")
+div_options = ["All Divisions (Consolidated)"] + sorted(raw_df['Divisi'].unique().tolist()) if 'Divisi' in raw_df.columns else ["All Divisions (Consolidated)"]
+selected_div = st.sidebar.selectbox("Pilih Divisi/SBU", div_options, index=0)
+
+if selected_div != "All Divisions (Consolidated)" and 'Divisi' in raw_df.columns:
+    df_filtered = raw_df[raw_df['Divisi'] == selected_div]
+else:
+    if 'Divisi' in raw_df.columns:
+        df_filtered = raw_df.groupby(['Tahun', 'Bulan', 'Bulan_Num'], as_index=False).agg({
+            'Revenue_Actual': 'sum', 'Revenue_Budget': 'sum',
+            'COGS_Actual': 'sum', 'COGS_Budget': 'sum',
+            'OpEx_Actual': 'sum', 'OpEx_Budget': 'sum',
+            'Net_Profit_Actual': 'sum', 'Net_Profit_Budget': 'sum',
+            'Cash_Balance': 'sum', 'Accounts_Receivable': 'sum',
+            'Accounts_Payable': 'sum', 'Inventory': 'sum',
+            'Total_Current_Assets': 'sum', 'Total_Current_Liabilities': 'sum'
+        })
+    else:
+        df_filtered = raw_df
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🗓️ Filter Periode Komparasi")
 
-years_available = sorted(df['Tahun'].unique().tolist())
+years_available = sorted(df_filtered['Tahun'].unique().tolist())
 selected_year = st.sidebar.selectbox("Pilih Tahun", years_available, index=len(years_available)-1)
 
-df_year = df[df['Tahun'] == selected_year].sort_values('Bulan_Num')
+df_year = df_filtered[df_filtered['Tahun'] == selected_year].sort_values('Bulan_Num')
 months_list = df_year['Bulan'].tolist()
 
 col_m1, col_m2 = st.sidebar.columns(2)
-with col_m1:
-    month_1 = st.selectbox("Bulan Fokus", options=months_list, index=months_list.index('Juni') if 'Juni' in months_list else 5)
-with col_m2:
-    month_2 = st.selectbox("Bulan Pembanding", options=months_list, index=months_list.index('Mei') if 'Mei' in months_list else 4)
-
-if month_1 == month_2:
-    st.sidebar.warning("⚠️ Pilih dua bulan berbeda untuk komparasi.")
+with col_m1: month_1 = st.selectbox("Periode Fokus", options=months_list, index=months_list.index('Juni') if 'Juni' in months_list else 5)
+with col_m2: month_2 = st.selectbox("Periode Pembanding", options=months_list, index=months_list.index('Mei') if 'Mei' in months_list else 4)
 
 row_m1 = df_year[df_year['Bulan'] == month_1].iloc[0]
 row_m2 = df_year[df_year['Bulan'] == month_2].iloc[0]
 
-# GLOBAL CALCULATIONS
-rev_m1 = row_m1['Revenue_Actual']
-rev_m2 = row_m2['Revenue_Actual']
-rev_var_rp = rev_m1 - rev_m2
-rev_var_pct = (rev_var_rp / rev_m2 * 100) if rev_m2 != 0 else 0
+# CALCULATION ENGINE
+rev1, rev2, rev_bud1 = row_m1['Revenue_Actual'], row_m2['Revenue_Actual'], row_m1['Revenue_Budget']
+cogs1, cogs2, cogs_bud1 = row_m1['COGS_Actual'], row_m2['COGS_Actual'], row_m1['COGS_Budget']
+opex1, opex2, opex_bud1 = row_m1['OpEx_Actual'], row_m2['OpEx_Actual'], row_m1['OpEx_Budget']
+net1, net2, net_bud1 = row_m1['Net_Profit_Actual'], row_m2['Net_Profit_Actual'], row_m1['Net_Profit_Budget']
 
-opex_m1 = row_m1['OpEx_Actual']
-opex_m2 = row_m2['OpEx_Actual']
-opex_var_rp = opex_m1 - opex_m2
-opex_var_pct = (opex_var_rp / opex_m2 * 100) if opex_m2 != 0 else 0
+gp1, gp2 = rev1 - cogs1, rev2 - cogs2
+gpm1, gpm2 = (gp1 / rev1 * 100) if rev1 > 0 else 0, (gp2 / rev2 * 100) if rev2 > 0 else 0
+npm1, npm2 = (net1 / rev1 * 100) if rev1 > 0 else 0, (net2 / rev2 * 100) if rev2 > 0 else 0
 
-cogs_m1 = row_m1['COGS_Actual']
-cogs_m2 = row_m2['COGS_Actual']
+cash1, cash2 = row_m1['Cash_Balance'], row_m2['Cash_Balance']
+ar1, ar2 = row_m1['Accounts_Receivable'], row_m2['Accounts_Receivable']
+ap1, ap2 = row_m1['Accounts_Payable'], row_m2['Accounts_Payable']
+ca1, ca2 = row_m1['Total_Current_Assets'], row_m2['Total_Current_Assets']
+cl1, cl2 = row_m1['Total_Current_Liabilities'], row_m2['Total_Current_Liabilities']
 
-net_m1 = row_m1['Net_Profit_Actual']
-net_m2 = row_m2['Net_Profit_Actual']
-net_var_rp = net_m1 - net_m2
-net_var_pct = (net_var_rp / abs(net_m2) * 100) if net_m2 != 0 else 0
+curr_ratio1, curr_ratio2 = ca1 / cl1 if cl1 > 0 else 0, ca2 / cl2 if cl2 > 0 else 0
+quick_ratio1, quick_ratio2 = (cash1 + ar1) / cl1 if cl1 > 0 else 0, (cash2 + ar2) / cl2 if cl2 > 0 else 0
+cash_ratio1, cash_ratio2 = cash1 / cl1 if cl1 > 0 else 0, cash2 / cl2 if cl2 > 0 else 0
+nwc1, nwc2 = ca1 - cl1, ca2 - cl2
+dso1 = (ar1 / rev1 * 30) if rev1 > 0 else 0
+dso2 = (ar2 / rev2 * 30) if rev2 > 0 else 0
 
-gp_m1_act = row_m1['Revenue_Actual'] - row_m1['COGS_Actual']
-gp_m2_act = row_m2['Revenue_Actual'] - row_m2['COGS_Actual']
-gp_m1_bud = row_m1['Revenue_Budget'] - row_m1['COGS_Budget']
-gp_m2_bud = row_m2['Revenue_Budget'] - row_m2['COGS_Budget']
+# CASH BURN RATE & RUNWAY ANALYSIS
+monthly_burn_rate = cogs1 + opex1
+cash_runway_months = (cash1 / monthly_burn_rate) if monthly_burn_rate > 0 else 0
+
+# FINANCIAL HEALTH SCORE CALCULATOR
+health_score = 0
+if rev1 >= rev_bud1: health_score += 20
+if curr_ratio1 >= 1.5: health_score += 20
+if quick_ratio1 >= 1.0: health_score += 20
+if npm1 >= 10: health_score += 20
+if (cogs1 / rev1) <= 0.6: health_score += 20
 
 # ==========================================
-# 4. DASHBOARD HEADER
+# 4. HERO EXECUTIVE BANNER & TABS
 # ==========================================
-st.markdown("## 📊 Executive Financial Dashboard")
-st.markdown(f"**Periode Fokus:** `{month_1} {selected_year}` &nbsp;|&nbsp; **Pembanding:** `{month_2} {selected_year}`")
+st.markdown(f"""
+<div class="hero-banner">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div>
+            <div class="hero-title">EXECUTIVE DECISION SUPPORT SYSTEM (C-EDSS)</div>
+            <div class="hero-sub">UNIT: <b>{selected_div.upper()}</b> | PERIODE: <b>{month_1} {selected_year}</b> vs PEMBANDING: <b>{month_2} {selected_year}</b></div>
+        </div>
+        <div style="text-align: right; margin-top: 10px;">
+            <span class="pill-green">🟢 STATUS: {'HEALTHY' if health_score>=80 else 'STABLE' if health_score>=50 else 'WARNING'}</span>
+            <div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 4px;">Score: <b>{health_score}/100</b></div>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-st.markdown("<br>", unsafe_allow_html=True)
-
-# DASHBOARD TABS
-tab_kpi, tab_table = st.tabs(["📌 Executive Financial KPIs (Dashboard View)", "📋 Tabel Komparasi Detail (P&L Variance)"])
+# TABS PYRAMID NAVIGATION WITH MODERN ICONS
+tab_l1, tab_l2, tab_l3, tab_l4, tab_l5 = st.tabs([
+    "🏛️ LEVEL 1: Executive Summary",
+    "📊 LEVEL 2: Performance (P&L)",
+    "💰 LEVEL 3: Position & Liquidity",
+    "📈 LEVEL 4: Deep Analytics & EWS",
+    "⚙️ LEVEL 5: Decision & What-If"
+])
 
 # ==========================================
-# TAB 1: EXECUTIVE FINANCIAL KPIS
+# LEVEL 1: EXECUTIVE SUMMARY
 # ==========================================
-with tab_kpi:
-    inc_act = row_m1['Revenue_Actual']
-    inc_prev = row_m2['Revenue_Actual']
-    inc_mom_pct = ((inc_act - inc_prev) / inc_prev * 100) if inc_prev != 0 else 0
+with tab_l1:
+    # TOP 3 HERO KPI CARDS
+    hk1, hk2, hk3 = st.columns(3)
     
-    net_act = row_m1['Net_Profit_Actual']
-    net_prev = row_m2['Net_Profit_Actual']
-    net_mom_pct = ((net_act - net_prev) / abs(net_prev) * 100) if net_prev != 0 else 0
+    rev_mom_pct = ((rev1 - rev2) / rev2 * 100) if rev2 > 0 else 0
+    rev_bud_pct = ((rev1 - rev_bud1) / rev_bud1 * 100) if rev_bud1 > 0 else 0
     
-    exp_act = row_m1['OpEx_Actual'] + row_m1['COGS_Actual']
-    exp_prev = row_m2['OpEx_Actual'] + row_m2['COGS_Actual']
-    exp_mom_pct = ((exp_act - exp_prev) / exp_prev * 100) if exp_prev != 0 else 0
-    
-    cash_act = row_m1['Cash_Balance']
-    cash_prev = row_m2['Cash_Balance']
-    cash_mom_pct = ((cash_act - cash_prev) / cash_prev * 100) if cash_prev != 0 else 0
-    
-    ar_act = row_m1['Accounts_Receivable']
-    ar_prev = row_m2['Accounts_Receivable']
-    ar_mom_pct = ((ar_act - ar_prev) / ar_prev * 100) if ar_prev != 0 else 0
-    
-    ap_act = row_m1['Accounts_Payable']
-    ap_prev = row_m2['Accounts_Payable']
-    ap_mom_pct = ((ap_act - ap_prev) / ap_prev * 100) if ap_prev != 0 else 0
-    
-    curr_ratio = row_m1['Total_Current_Assets'] / row_m1['Total_Current_Liabilities'] if row_m1['Total_Current_Liabilities'] > 0 else 0
-    curr_ratio_prev = row_m2['Total_Current_Assets'] / row_m2['Total_Current_Liabilities'] if row_m2['Total_Current_Liabilities'] > 0 else 0
-    curr_ratio_mom_pct = ((curr_ratio - curr_ratio_prev) / curr_ratio_prev * 100) if curr_ratio_prev != 0 else 0
-    
-    quick_assets = row_m1['Cash_Balance'] + row_m1['Accounts_Receivable']
-    quick_assets_prev = row_m2['Cash_Balance'] + row_m2['Accounts_Receivable']
-    quick_ratio = quick_assets / row_m1['Total_Current_Liabilities'] if row_m1['Total_Current_Liabilities'] > 0 else 0
-    quick_ratio_prev = quick_assets_prev / row_m2['Total_Current_Liabilities'] if row_m2['Total_Current_Liabilities'] > 0 else 0
-    quick_ratio_mom_pct = ((quick_ratio - quick_ratio_prev) / quick_ratio_prev * 100) if quick_ratio_prev != 0 else 0
-    
-    npm_pct = (net_act / inc_act * 100) if inc_act > 0 else 0
-    pct_income_budget = (inc_act / row_m1['Revenue_Budget'] * 100) if row_m1['Revenue_Budget'] > 0 else 0
-    pct_exp_budget = (exp_act / (row_m1['COGS_Budget'] + row_m1['OpEx_Budget']) * 100) if (row_m1['COGS_Budget'] + row_m1['OpEx_Budget']) > 0 else 0
+    with hk1:
+        st.markdown(f"""
+        <div class="hero-kpi-card hero-kpi-emerald">
+            <div class="kpi-title">💵 TOTAL REVENUE ({month_1})</div>
+            <div class="kpi-big-val">Rp {rev1:,.0f}</div>
+            <div>
+                <span class="{'pill-green' if rev_mom_pct>=0 else 'pill-red'}">{rev_mom_pct:+.1f}% vs {month_2}</span>
+                <span class="{'pill-green' if rev_bud_pct>=0 else 'pill-red'}" style="margin-left:4px;">{rev_bud_pct:+.1f}% vs Target</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # ROW 1 KPI CARDS
-    k_col1, k_col2, k_col3, k_col4, k_col5 = st.columns(5)
-    
-    with k_col1:
-        pill_cls = "kpi-pill-pos" if inc_mom_pct >= 0 else "kpi-pill-neg"
+    net_mom_pct = ((net1 - net2) / abs(net2) * 100) if net2 != 0 else 0
+    with hk2:
         st.markdown(f"""
-        <div class="kpi-wrapper kpi-accent-green">
-            <div class="kpi-label">Income (Revenue)</div>
-            <div class="kpi-val">{inc_act:,.0f}</div>
-            <div class="{pill_cls}">{inc_mom_pct:+.1f}% vs {month_2}</div>
+        <div class="hero-kpi-card hero-kpi-indigo">
+            <div class="kpi-title">💎 NET PROFIT ({month_1})</div>
+            <div class="kpi-big-val">Rp {net1:,.0f}</div>
+            <div>
+                <span class="{'pill-green' if net_mom_pct>=0 else 'pill-red'}">{net_mom_pct:+.1f}% vs {month_2}</span>
+                <span class="pill-amber" style="margin-left:4px;">NPM: {npm1:.1f}%</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
-        
-    with k_col2:
-        pill_cls = "kpi-pill-neg" if exp_mom_pct > 0 else "kpi-pill-pos"
+
+    cash_mom_pct = ((cash1 - cash2) / cash2 * 100) if cash2 > 0 else 0
+    with hk3:
         st.markdown(f"""
-        <div class="kpi-wrapper kpi-accent-amber">
-            <div class="kpi-label">Expenses (COGS+OpEx)</div>
-            <div class="kpi-val">{exp_act:,.0f}</div>
-            <div class="{pill_cls}">{exp_mom_pct:+.1f}% vs {month_2}</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with k_col3:
-        st.markdown(f"""
-        <div class="kpi-wrapper kpi-accent-green">
-            <div class="kpi-label">% of Income Budget</div>
-            <div class="kpi-val">{pct_income_budget:.0f}%</div>
-            <div class="kpi-pill-pos">Target Achieved</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with k_col4:
-        pill_cls = "kpi-pill-pos" if ar_mom_pct <= 0 else "kpi-pill-neg"
-        st.markdown(f"""
-        <div class="kpi-wrapper kpi-accent-blue">
-            <div class="kpi-label">Accounts Receivable</div>
-            <div class="kpi-val">{ar_act:,.0f}</div>
-            <div class="{pill_cls}">{ar_mom_pct:+.1f}% vs {month_2}</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with k_col5:
-        st.markdown(f"""
-        <div class="kpi-wrapper kpi-accent-blue">
-            <div class="kpi-label">Accounts Payable</div>
-            <div class="kpi-val">{ap_act:,.0f}</div>
-            <div class="kpi-pill-pos">{ap_mom_pct:+.1f}% vs {month_2}</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    # ROW 2 KPI CARDS
-    k_col6, k_col7, k_col8, k_col9, k_col10 = st.columns(5)
-    
-    with k_col6:
-        pill_cls = "kpi-pill-pos" if net_mom_pct >= 0 else "kpi-pill-neg"
-        st.markdown(f"""
-        <div class="kpi-wrapper kpi-accent-green">
-            <div class="kpi-label">Net Profit</div>
-            <div class="kpi-val">{net_act:,.0f}</div>
-            <div class="{pill_cls}">{net_mom_pct:+.1f}% vs {month_2}</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with k_col7:
-        pill_cls = "kpi-pill-pos" if cash_mom_pct >= 0 else "kpi-pill-neg"
-        st.markdown(f"""
-        <div class="kpi-wrapper kpi-accent-navy">
-            <div class="kpi-label">Cash Balance</div>
-            <div class="kpi-val">{cash_act:,.0f}</div>
-            <div class="{pill_cls}">{cash_mom_pct:+.1f}% vs {month_2}</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with k_col8:
-        st.markdown(f"""
-        <div class="kpi-wrapper kpi-accent-navy">
-            <div class="kpi-label">% of Expenses Budget</div>
-            <div class="kpi-val">{pct_exp_budget:.0f}%</div>
-            <div class="kpi-pill-pos">Budget Realized</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with k_col9:
-        st.markdown(f"""
-        <div class="kpi-wrapper kpi-accent-blue">
-            <div class="kpi-label">Quick Ratio</div>
-            <div class="kpi-val">{quick_ratio:.2f}</div>
-            <div class="kpi-pill-pos">{quick_ratio_mom_pct:+.1f}% vs {month_2}</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with k_col10:
-        st.markdown(f"""
-        <div class="kpi-wrapper kpi-accent-blue">
-            <div class="kpi-label">Current Ratio</div>
-            <div class="kpi-val">{curr_ratio:.2f}</div>
-            <div class="kpi-pill-pos">{curr_ratio_mom_pct:+.1f}% vs {month_2}</div>
+        <div class="hero-kpi-card hero-kpi-purple">
+            <div class="kpi-title">💰 CASH BALANCE ({month_1})</div>
+            <div class="kpi-big-val">Rp {cash1:,.0f}</div>
+            <div>
+                <span class="{'pill-green' if cash_mom_pct>=0 else 'pill-red'}">{cash_mom_pct:+.1f}% vs {month_2}</span>
+                <span class="pill-green" style="margin-left:4px;">CR: {curr_ratio1:.2f}x</span>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-
-    # WATERFALL & SUMMARY LIST
-    col_v1, col_v2 = st.columns([1.8, 1])
     
-    with col_v1:
-        st.markdown("<div class='excel-card'>", unsafe_allow_html=True)
-        st.markdown("#### 📊 P&L Statement Waterfall Breakdown")
+    col_gauge, col_story = st.columns([1.2, 1.8])
+    
+    with col_gauge:
+        st.markdown("<div class='pbi-card'>", unsafe_allow_html=True)
+        st.markdown("#### ❤️ Financial Health Gauge")
+        
+        if health_score >= 80:
+            bar_color = "#10b981"
+            health_status_text = "EXCELLENT 🌟"
+        elif health_score >= 50:
+            bar_color = "#f59e0b"
+            health_status_text = "AVERAGE ⚠️"
+        else:
+            bar_color = "#ef4444"
+            health_status_text = "CRITICAL 🚨"
+            
+        fig_gauge = go.Figure(go.Indicator(
+            mode = "gauge+number",
+            value = health_score,
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            title = {'text': f"Status: <b>{health_status_text}</b>", 'font': {'size': 14, 'color': bar_color}},
+            number = {'suffix': "/100", 'font': {'size': 36, 'color': '#0f172a', 'family': 'Segoe UI'}},
+            gauge = {
+                'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': "#94a3b8"},
+                'bar': {'color': bar_color, 'thickness': 0.65},
+                'bgcolor': "#f8fafc",
+                'borderwidth': 1,
+                'bordercolor': "#cbd5e1",
+                'steps': [
+                    {'range': [0, 50], 'color': '#fee2e2'},
+                    {'range': [50, 80], 'color': '#fef3c7'},
+                    {'range': [80, 100], 'color': '#dcfce7'}
+                ]
+            }
+        ))
+        fig_gauge.update_layout(height=260, margin=dict(l=20, r=20, t=10, b=10), paper_bgcolor='rgba(0,0,0,0)')
+        st.plotly_chart(fig_gauge, use_container_width=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col_story:
+        st.markdown("<div class='pbi-card'>", unsafe_allow_html=True)
+        st.markdown("#### 🤖 AI Executive Storytelling Card")
+        
+        st.markdown(f"""
+        <div class="story-box-blue">
+            📊 <b>[1. KINERJA PENJUALAN]</b> Revenue unit <b>{selected_div}</b> bulan <b>{month_1}</b> tercatat <b>Rp {rev1:,.0f}</b> 
+            (<span style="color:{'#16a34a' if rev_bud_pct>=0 else '#dc2626'}; font-weight:bold;">{'Melampaui' if rev_bud_pct>=0 else 'Di Bawah'} Target Budget {rev_bud_pct:+.1f}%</span>). MoM vs {month_2}: <b>{rev_mom_pct:+.1f}%</b>.
+        </div>
+        <div class="story-box-indigo">
+            🎯 <b>[2. PROFITABILITAS]</b> Net Profit Margin berada di tingkat <b>{npm1:.1f}%</b> (Pembanding {month_2}: <b>{npm2:.1f}%</b>). 
+            Total Laba Bersih: <b>Rp {net1:,.0f}</b>. Permasalahan utama bersumber dari efisiensi porsi COGS.
+        </div>
+        <div class="story-box-green">
+            ⚖️ <b>[3. WORKING CAPITAL & LIKUIDITAS]</b> Current Ratio tercatat aman di tingkat <b>{curr_ratio1:.2f}x</b> (Ideal ≥ 1.5x) dan Quick Ratio <b>{quick_ratio1:.2f}x</b>. Net Working Capital mencapai <b>Rp {nwc1:,.0f}</b>.
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+# ==========================================
+# LEVEL 2: FINANCIAL PERFORMANCE (P&L)
+# ==========================================
+with tab_l2:
+    st.markdown("<div class='pbi-card'>", unsafe_allow_html=True)
+    st.markdown("### 📊 Komparasi Detail P&L Statement (Actual vs Budget vs Pembanding)")
+    
+    pnl_table_html = f"""
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th style="text-align:left;">Komponen Keuangan</th>
+                <th>Actual ({month_1})</th>
+                <th>Budget ({month_1})</th>
+                <th>Actual ({month_2})</th>
+                <th>Variance vs Target (Rp)</th>
+                <th>Variance vs Target (%)</th>
+                <th>Variance MoM (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align:left;"><b>💵 Revenue (Penjualan)</b></td>
+                <td>Rp {rev1:,.0f}</td><td>Rp {rev_bud1:,.0f}</td><td>Rp {rev2:,.0f}</td>
+                <td>{rev1-rev_bud1:+,.0f}</td>
+                <td><b style="color:{'#16a34a' if rev1>=rev_bud1 else '#dc2626'};">{((rev1-rev_bud1)/rev_bud1*100):+.1f}%</b></td>
+                <td><b style="color:{'#16a34a' if rev1>=rev2 else '#dc2626'};">{((rev1-rev2)/rev2*100):+.1f}%</b></td>
+            </tr>
+            <tr>
+                <td style="text-align:left;"><b>🏭 COGS (HPP)</b></td>
+                <td>Rp {cogs1:,.0f}</td><td>Rp {cogs_bud1:,.0f}</td><td>Rp {cogs2:,.0f}</td>
+                <td>{cogs1-cogs_bud1:+,.0f}</td>
+                <td><b style="color:{'#dc2626' if cogs1>cogs_bud1 else '#16a34a'};">{((cogs1-cogs_bud1)/cogs_bud1*100):+.1f}%</b></td>
+                <td><b style="color:{'#dc2626' if cogs1>cogs2 else '#16a34a'};">{((cogs1-cogs2)/cogs2*100):+.1f}%</b></td>
+            </tr>
+            <tr>
+                <td style="text-align:left;"><b>📈 Gross Profit</b></td>
+                <td>Rp {gp1:,.0f}</td><td>Rp {rev_bud1-cogs_bud1:,.0f}</td><td>Rp {gp2:,.0f}</td>
+                <td>{gp1-(rev_bud1-cogs_bud1):+,.0f}</td>
+                <td><b style="color:{'#16a34a' if gp1>=(rev_bud1-cogs_bud1) else '#dc2626'};">{((gp1-(rev_bud1-cogs_bud1))/(rev_bud1-cogs_bud1)*100):+.1f}%</b></td>
+                <td><b style="color:{'#16a34a' if gp1>=gp2 else '#dc2626'};">{((gp1-gp2)/gp2*100):+.1f}%</b></td>
+            </tr>
+            <tr>
+                <td style="text-align:left;"><b>🏢 Operating Expenses (OpEx)</b></td>
+                <td>Rp {opex1:,.0f}</td><td>Rp {opex_bud1:,.0f}</td><td>Rp {opex2:,.0f}</td>
+                <td>{opex1-opex_bud1:+,.0f}</td>
+                <td><b style="color:{'#dc2626' if opex1>opex_bud1 else '#16a34a'};">{((opex1-opex_bud1)/opex_bud1*100):+.1f}%</b></td>
+                <td><b style="color:{'#dc2626' if opex1>opex2 else '#16a34a'};">{((opex1-opex2)/opex2*100):+.1f}%</b></td>
+            </tr>
+            <tr>
+                <td style="text-align:left;"><b>💎 Net Profit</b></td>
+                <td>Rp {net1:,.0f}</td><td>Rp {net_bud1:,.0f}</td><td>Rp {net2:,.0f}</td>
+                <td>{net1-net_bud1:+,.0f}</td>
+                <td><b style="color:{'#16a34a' if net1>=net_bud1 else '#dc2626'};">{((net1-net_bud1)/abs(net_bud1)*100):+.1f}%</b></td>
+                <td><b style="color:{'#16a34a' if net1>=net2 else '#dc2626'};">{((net1-net2)/abs(net2)*100):+.1f}%</b></td>
+            </tr>
+        </tbody>
+    </table>
+    """
+    st.html(pnl_table_html)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    col_wat, col_rad = st.columns([1.6, 1.2])
+    with col_wat:
+        st.markdown("<div class='pbi-card'>", unsafe_allow_html=True)
+        st.markdown("#### 🌊 Waterfall Financial Driver Modern")
         
         fig_waterfall = go.Figure(go.Waterfall(
-            name="P&L", orientation="v",
-            measure=["relative", "relative", "total", "relative", "total"],
-            x=["Total Income", "COGS", "Gross Profit", "OpEx", "Net Profit"],
-            text=[f"+{inc_act:,.0f}", f"-{row_m1['COGS_Actual']:,.0f}", f"{(inc_act-row_m1['COGS_Actual']):,.0f}", f"-{row_m1['OpEx_Actual']:,.0f}", f"{net_act:,.0f}"],
-            y=[inc_act, -row_m1['COGS_Actual'], 0, -row_m1['OpEx_Actual'], 0],
+            orientation="v", measure=["relative", "relative", "total", "relative", "total"],
+            x=["Revenue", "COGS", "Gross Profit", "OpEx", "Net Profit"],
+            text=[f"+{rev1:,.0f}", f"-{cogs1:,.0f}", f"{gp1:,.0f}", f"-{opex1:,.0f}", f"{net1:,.0f}"],
+            y=[rev1, -cogs1, 0, -opex1, 0],
             connector={"line":{"color":"#94a3b8"}},
-            decreasing={"marker":{"color":"#dc2626"}},
-            increasing={"marker":{"color":"#16a34a"}},
+            decreasing={"marker":{"color":"#ef4444"}},
+            increasing={"marker":{"color":"#10b981"}},
             totals={"marker":{"color":"#1e3a8a"}}
         ))
-        fig_waterfall.update_layout(template="plotly_white", paper_bgcolor="rgba(0,0,0,0)", height=320, margin=dict(l=10, r=10, t=10, b=10))
+        fig_waterfall.update_layout(height=320, margin=dict(l=10, r=10, t=10, b=10), template="plotly_white")
         st.plotly_chart(fig_waterfall, use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
+
+    with col_rad:
+        st.markdown("<div class='pbi-card'>", unsafe_allow_html=True)
+        st.markdown("#### 🎯 Executive Radar Balance Chart")
         
-    with col_v2:
-        st.markdown("<div class='excel-card'>", unsafe_allow_html=True)
-        st.markdown("#### 📋 Executive KPI Summary List")
+        categories = ['Revenue Target', 'Gross Margin', 'Net Margin', 'Quick Ratio', 'Current Ratio']
+        r_foc = [min(rev1/rev_bud1*100, 120), gpm1*2, npm1*3, quick_ratio1*30, curr_ratio1*25]
         
-        kpi_list_df = pd.DataFrame([
-            {"ID": 1, "KPIs": "Income Growth (MoM)", "Value": f"{inc_mom_pct:+.1f}%"},
-            {"ID": 2, "KPIs": "Net Profit Growth (MoM)", "Value": f"{net_mom_pct:+.1f}%"},
-            {"ID": 3, "KPIs": "Net Profit Margin %", "Value": f"{npm_pct:.1f}%"},
-            {"ID": 4, "KPIs": "Expenses Change (MoM)", "Value": f"{exp_mom_pct:+.1f}%"},
-            {"ID": 5, "KPIs": "Cash Balance Change", "Value": f"{cash_mom_pct:+.1f}%"},
-            {"ID": 6, "KPIs": "Quick Ratio", "Value": f"{quick_ratio:.2f}"},
-            {"ID": 7, "KPIs": "Current Ratio", "Value": f"{curr_ratio:.2f}"},
-            {"ID": 8, "KPIs": "% of Income Budget", "Value": f"{pct_income_budget:.1f}%"},
-            {"ID": 9, "KPIs": "% of Expenses Budget", "Value": f"{pct_exp_budget:.1f}%"}
-        ])
-        st.dataframe(kpi_list_df, use_container_width=True, hide_index=True)
+        fig_radar = go.Figure()
+        fig_radar.add_trace(go.Scatterpolar(r=r_foc, theta=categories, fill='toself', name=month_1, fillcolor='rgba(56, 189, 248, 0.3)', line=dict(color='#0284c7')))
+        fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 120])), height=320, margin=dict(l=20, r=20, t=10, b=10))
+        st.plotly_chart(fig_radar, use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# TAB 2: TABEL KOMPARASI DETAIL
+# LEVEL 3: FINANCIAL POSITION & CASH RUNWAY
 # ==========================================
-with tab_table:
-    st.markdown("### 📋 Komparasi Laporan Keuangan (Actual vs Budget)")
-
-    def fmt_rp(val):
-        if val < 0:
-            return f"({abs(val):,.0f})"
-        return f"{val:,.0f}"
-
-    def fmt_pct(val):
-        if val < 0:
-            return f"<span style='color: #dc2626; font-weight: bold;'>-{abs(val):.0f}%</span>"
-        return f"<span style='color: #16a34a; font-weight: bold;'>{val:.0f}%</span>"
-
-    def get_status_icon(name, var_pct):
-        is_cost = name in ['COGS', 'Opex']
-        if is_cost:
-            return "✅" if var_pct <= 0 else "❌"
-        return "✅" if var_pct >= 0 else "❌"
-
-    def get_mini_bar(var_pct):
-        width = min(max(int(abs(var_pct) * 1.5), 12), 100)
-        fill_cls = "spark-fill-purple" if var_pct >= 0 else "spark-fill-red"
-        return f"<div class='spark-bg'><div class='{fill_cls}' style='width: {width}%;'></div></div>"
-
-    components = [
-        ("Revenue (Penjualan)", row_m1['Revenue_Actual'], row_m2['Revenue_Actual'], row_m1['Revenue_Budget'], row_m2['Revenue_Budget']),
-        ("COGS", row_m1['COGS_Actual'], row_m2['COGS_Actual'], row_m1['COGS_Budget'], row_m2['COGS_Budget']),
-        ("Gross Profit", gp_m1_act, gp_m2_act, gp_m1_bud, gp_m2_bud),
-        ("Opex", row_m1['OpEx_Actual'], row_m2['OpEx_Actual'], row_m1['OpEx_Budget'], row_m2['OpEx_Budget']),
-        ("Nett Profit", row_m1['Net_Profit_Actual'], row_m2['Net_Profit_Actual'], row_m1['Net_Profit_Budget'], row_m2['Net_Profit_Budget'])
-    ]
-
-    table_rows_html = ""
-    for name, act1, act2, bud1, bud2 in components:
-        var_foc_rp = act1 - bud1
-        var_foc_pct = ((act1 - bud1) / abs(bud1) * 100) if bud1 != 0 else 0
-        bar_foc = get_mini_bar(var_foc_pct)
+with tab_l3:
+    st.markdown("<div class='pbi-card'>", unsafe_allow_html=True)
+    st.markdown("### 💰 Balance Sheet Position, Liquidity & Working Capital")
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # 4 MODERN ROUNDED CONTAINER CARDS
+    q1, q2, q3, q4 = st.columns(4)
+    
+    curr_var_val = curr_ratio1 - curr_ratio2
+    quick_var_val = quick_ratio1 - quick_ratio2
+    cash_var_val = cash_ratio1 - cash_ratio2
+    nwc_var_val = nwc1 - nwc2
+    
+    with q1:
+        st.markdown(f"""
+        <div class="metric-card-box card-border-blue">
+            <div class="card-metric-title">⚖️ Current Ratio</div>
+            <div class="card-metric-val">{curr_ratio1:.2f}x</div>
+            <div>
+                <span class="{'pill-green' if curr_var_val>=0 else 'pill-red'}">
+                    {'↑' if curr_var_val>=0 else '↓'} {curr_var_val:+.2f} vs {month_2}
+                </span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
-        var_act_rp = act1 - act2
-        var_act_pct = ((act1 - act2) / abs(act2) * 100) if act2 != 0 else 0
-        bar_act = get_mini_bar(var_act_pct)
+    with q2:
+        st.markdown(f"""
+        <div class="metric-card-box card-border-green">
+            <div class="card-metric-title">🚀 Quick Ratio</div>
+            <div class="card-metric-val">{quick_ratio1:.2f}x</div>
+            <div>
+                <span class="{'pill-green' if quick_var_val>=0 else 'pill-red'}">
+                    {'↑' if quick_var_val>=0 else '↓'} {quick_var_val:+.2f} vs {month_2}
+                </span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
-        var_bud_rp = bud1 - bud2
-        var_bud_pct = ((bud1 - bud2) / abs(bud2) * 100) if bud2 != 0 else 0
-        bar_bud = get_mini_bar(var_bud_pct)
+    with q3:
+        st.markdown(f"""
+        <div class="metric-card-box card-border-amber">
+            <div class="card-metric-title">🏦 Cash Ratio</div>
+            <div class="card-metric-val">{cash_ratio1:.2f}x</div>
+            <div>
+                <span class="{'pill-green' if cash_var_val>=0 else 'pill-red'}">
+                    {'↑' if cash_var_val>=0 else '↓'} {cash_var_val:+.2f} vs {month_2}
+                </span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
-        icon_foc = get_status_icon(name, var_foc_pct)
+    with q4:
+        st.markdown(f"""
+        <div class="metric-card-box card-border-purple">
+            <div class="card-metric-title">💼 Net Working Capital</div>
+            <div class="card-metric-val">Rp {nwc1:,.0f}</div>
+            <div>
+                <span class="{'pill-green' if nwc_var_val>=0 else 'pill-red'}">
+                    {'↑' if nwc_var_val>=0 else '↓'} Rp {nwc_var_val:+,.0f} vs {month_2}
+                </span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    col_bs, col_ar = st.columns([1.4, 1.4])
+    
+    with col_bs:
+        st.markdown("#### ⚖️ Balance Sheet Structure & Cash Runway")
         
-        table_rows_html += f"""
-        <tr>
-            <td style='text-align: left; font-weight: 600;'>{name}</td>
-            <td>{fmt_rp(act1)} {icon_foc}</td>
-            <td>{fmt_rp(act2)}</td>
-            <td>{fmt_rp(bud1)}</td>
-            <td>{fmt_rp(bud2)}</td>
-            <td class='focus-cell'>{fmt_rp(var_foc_rp)}</td>
-            <td class='focus-cell'>{fmt_pct(var_foc_pct)}</td>
-            <td class='focus-cell'>{bar_foc}</td>
-            <td>{fmt_rp(var_act_rp)}</td>
-            <td>{fmt_pct(var_act_pct)}</td>
-            <td>{bar_act}</td>
-            <td>{fmt_rp(var_bud_rp)}</td>
-            <td>{fmt_pct(var_bud_pct)}</td>
-            <td>{bar_bud}</td>
-        </tr>
-        """
+        fig_bs = go.Figure()
+        fig_bs.add_trace(go.Bar(y=['Aktiva / Pasiva'], x=[ca1], name='Current Assets', orientation='h', marker_color='#10b981'))
+        fig_bs.add_trace(go.Bar(y=['Aktiva / Pasiva'], x=[cl1], name='Current Liabilities', orientation='h', marker_color='#ef4444'))
+        fig_bs.add_trace(go.Bar(y=['Aktiva / Pasiva'], x=[nwc1], name='Working Capital Surplus', orientation='h', marker_color='#38bdf8'))
+        
+        fig_bs.update_layout(barmode='stack', height=180, margin=dict(l=10, r=10, t=10, b=10), template="plotly_white")
+        st.plotly_chart(fig_bs, use_container_width=True)
 
-    full_table_html = f"""
-    <div class="table-container">
-        <table class="custom-table">
-            <thead>
-                <tr>
-                    <th rowspan="2" style="text-align: left;">Komponen Keuangan</th>
-                    <th colspan="2">Actual (Rp)</th>
-                    <th colspan="2">Budget (Rp)</th>
-                    <th colspan="3" class="focus-header">Variance Bulan Focus (vs Budget)</th>
-                    <th colspan="3">Variance Actual ({month_1} vs {month_2})</th>
-                    <th colspan="3">Variance Budget ({month_1} vs {month_2})</th>
-                </tr>
-                <tr>
-                    <th>{month_1}</th>
-                    <th>{month_2}</th>
-                    <th>{month_1}</th>
-                    <th>{month_2}</th>
-                    <th class="focus-header">Rp</th>
-                    <th class="focus-header">%</th>
-                    <th class="focus-header">Trend</th>
-                    <th>Rp</th>
-                    <th>%</th>
-                    <th>Trend</th>
-                    <th>Rp</th>
-                    <th>%</th>
-                    <th>Trend</th>
-                </tr>
-            </thead>
-            <tbody>
-                {table_rows_html}
-            </tbody>
-        </table>
-    </div>
-    """
+        # CASH RUNWAY ANALYSIS CARD
+        runway_cls = "story-box-green" if cash_runway_months >= 3 else "story-box-amber" if cash_runway_months >= 1.5 else "story-box-blue"
+        st.markdown(f"""
+        <div class="{runway_cls}">
+            ⛽ <b>Monthly Cash Burn Rate:</b> Rp {monthly_burn_rate:,.0f} / bulan<br>
+            ⏱️ <b>Cash Runway Resilience:</b> <b>{cash_runway_months:.1f} Bulan</b> ketahanan kas tanpa pendapatan baru.
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.html(full_table_html)
-
-# ==========================================
-# 5. CHARTS & VISUALS
-# ==========================================
-st.markdown("<br>", unsafe_allow_html=True)
-col_c1, col_c2 = st.columns([1.6, 1])
-
-with col_c1:
-    st.markdown("<div class='excel-card'>", unsafe_allow_html=True)
-    st.markdown("#### 📈 Perbandingan Actual (Bulan Fokus vs Pembanding)")
-    
-    chart_data = pd.DataFrame({
-        'Komponen': ['Revenue', 'COGS', 'Gross Profit', 'OpEx', 'Net Profit'],
-        month_1: [row_m1['Revenue_Actual'], row_m1['COGS_Actual'], gp_m1_act, row_m1['OpEx_Actual'], row_m1['Net_Profit_Actual']],
-        month_2: [row_m2['Revenue_Actual'], row_m2['COGS_Actual'], gp_m2_act, row_m2['OpEx_Actual'], row_m2['Net_Profit_Actual']]
-    })
-    
-    fig_comp = go.Figure()
-    fig_comp.add_trace(go.Bar(x=chart_data['Komponen'], y=chart_data[month_1], name=month_1, marker_color='#1e3a8a'))
-    fig_comp.add_trace(go.Bar(x=chart_data['Komponen'], y=chart_data[month_2], name=month_2, marker_color='#cbd5e1'))
-    
-    fig_comp.update_layout(
-        barmode='group', template="plotly_white", paper_bgcolor='rgba(0,0,0,0)', height=320,
-        margin=dict(l=10, r=10, t=10, b=10), legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
-    )
-    st.plotly_chart(fig_comp, use_container_width=True)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-with col_c2:
-    st.markdown("<div class='excel-card'>", unsafe_allow_html=True)
-    st.markdown(f"#### 🎯 Pencapaian Target Budget ({month_1})")
-    
-    rev_achieved_pct = (row_m1['Revenue_Actual'] / row_m1['Revenue_Budget']) * 100 if row_m1['Revenue_Budget'] > 0 else 0
-    
-    fig_gauge = go.Figure(go.Indicator(
-        mode = "gauge+number",
-        value = rev_achieved_pct,
-        number = {'suffix': "%"},
-        title = {'text': f"Pencapaian Target Revenue", 'font': {'size': 13, 'color': '#64748b'}},
-        gauge = {
-            'axis': {'range': [0, 150]},
-            'bar': {'color': "#16a34a"},
-            'steps': [
-                {'range': [0, 80], 'color': "#fee2e2"},
-                {'range': [80, 100], 'color': "#fef3c7"},
-                {'range': [100, 150], 'color': "#dcfce7"}
-            ]
-        }
-    ))
-    fig_gauge.update_layout(template="plotly_white", paper_bgcolor='rgba(0,0,0,0)', height=320, margin=dict(l=10, r=10, t=10, b=10))
-    st.plotly_chart(fig_gauge, use_container_width=True)
+    with col_ar:
+        st.markdown("#### 📥 Receivables (AR) & Payables (AP) Health")
+        
+        ar_growth_val = ((ar1 - ar2) / ar2 * 100) if ar2 > 0 else 0
+        ap_growth_val = ((ap1 - ap2) / ap2 * 100) if ap2 > 0 else 0
+        
+        st.markdown(f"""
+        <div class="story-box-blue">
+            📥 <b>Saldo Piutang Dagang (AR {month_1}):</b> Rp {ar1:,.0f} 
+            <span style="font-size:0.85rem; padding:2px 8px; border-radius:12px; background-color:{'#fee2e2' if ar_growth_val>15 else '#dcfce7'}; color:{'#b91c1c' if ar_growth_val>15 else '#15803d'}; font-weight:bold; margin-left:6px;">
+                {ar_growth_val:+.1f}% vs {month_2} (Rp {ar2:,.0f})
+            </span>
+        </div>
+        <div class="story-box-amber">
+            ⏳ <b>Days Sales Outstanding (DSO Est.):</b> <b>{dso1:.0f} Hari</b> 
+            <span style="font-size:0.85rem; color:#b45309; font-weight:bold; margin-left:6px;">
+                (vs {month_2}: {dso2:.0f} Hari)
+            </span>
+        </div>
+        <div class="story-box-indigo">
+            📤 <b>Saldo Hutang Lancar (AP {month_1}):</b> Rp {ap1:,.0f} 
+            <span style="font-size:0.85rem; padding:2px 8px; border-radius:12px; background-color:#f3e8ff; color:#6b21a8; font-weight:bold; margin-left:6px;">
+                {ap_growth_val:+.1f}% vs {month_2} (Rp {ap2:,.0f})
+            </span>
+        </div>
+        """, unsafe_allow_html=True)
+        st.info(f"**AI Commentary:** Likuiditas jangka pendek sangat sehat. Total cadangan kas tunai (Rp {cash1:,.0f}) mampu mengkover seluruh kewajiban lancar AP.")
+        
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# 6. GUARANTEED 5-BOX MULTI-FINANCIAL ANALYSIS
+# LEVEL 4: DEEP ANALYTICS & EARLY WARNING
 # ==========================================
-st.markdown("<div class='excel-card'>", unsafe_allow_html=True)
-st.markdown("### 💡 Hasil Analisis & Rekomendasi Manajemen Komprehensif")
-
-# DIRECT UNCONDITIONAL ARRAY GENERATION
-foc_rev_var = row_m1['Revenue_Actual'] - row_m1['Revenue_Budget']
-foc_rev_pct = (foc_rev_var / row_m1['Revenue_Budget']) * 100 if row_m1['Revenue_Budget'] > 0 else 0
-
-cogs_foc_var = row_m1['COGS_Actual'] - row_m1['COGS_Budget']
-gpm_m1 = ((row_m1['Revenue_Actual'] - row_m1['COGS_Actual']) / row_m1['Revenue_Actual'] * 100) if row_m1['Revenue_Actual'] > 0 else 0
-gpm_m2 = ((row_m2['Revenue_Actual'] - row_m2['COGS_Actual']) / row_m2['Revenue_Actual'] * 100) if row_m2['Revenue_Actual'] > 0 else 0
-
-foc_opex_var = row_m1['OpEx_Actual'] - row_m1['OpEx_Budget']
-foc_opex_pct = (foc_opex_var / row_m1['OpEx_Budget'] * 100) if row_m1['OpEx_Budget'] > 0 else 0
-
-npm_m1 = (row_m1['Net_Profit_Actual'] / row_m1['Revenue_Actual'] * 100) if row_m1['Revenue_Actual'] > 0 else 0
-
-ar_m1 = row_m1['Accounts_Receivable']
-ar_m2 = row_m2['Accounts_Receivable']
-ar_growth = ((ar_m1 - ar_m2) / ar_m2 * 100) if ar_m2 > 0 else 0
-
-curr_r = row_m1['Total_Current_Assets'] / row_m1['Total_Current_Liabilities'] if row_m1['Total_Current_Liabilities'] > 0 else 0
-
-# FORMATTED HTML BOXES FOR ALL 5 DIMENSIONS
-box_1_rev = f"<b>[1. KINERJA PENJUALAN / REVENUE]</b> Target budget {month_1}: " + (f"<span style='color:#16a34a;'><b>TERCAPAI (+{foc_rev_pct:.1f}%)</b></span>. Surplus: Rp {foc_rev_var:,.0f}." if foc_rev_var >= 0 else f"<span style='color:#dc2626;'><b>TIDAK TERCAPAI ({foc_rev_pct:.1f}%)</b></span>. Defisit: Rp {abs(foc_rev_var):,.0f}.") + f"<br>MoM vs {month_2}: " + (f"Tumbuh <b>+{rev_var_pct:.1f}%</b>." if rev_var_rp >= 0 else f"Penurunan <b>{rev_var_pct:.1f}%</b> (Turun Rp {abs(rev_var_rp):,.0f}).")
-
-box_2_cogs = f"<b>[2. HARGA POKOK PENJUALAN / COGS & GPM]</b> COGS {month_1}: Rp {row_m1['COGS_Actual']:,.0f} " + (f"(<span style='color:#dc2626;'><b>Overbudget Rp {cogs_foc_var:,.0f}</b></span>). Audit biaya baku produksi." if cogs_foc_var > 0 else "(<span style='color:#16a34a;'><b>Efisiensi di bawah budget</b></span>).") + f" Gross Profit Margin: <b>{gpm_m1:.1f}%</b> (Pembanding {month_2}: {gpm_m2:.1f}%)."
-
-box_3_opex = f"<b>[3. BIAYA OPERASIONAL / OPEX CONTROL]</b> OpEx {month_1}: Rp {row_m1['OpEx_Actual']:,.0f} " + (f"(<span style='color:#dc2626;'><b>Overbudget +{foc_opex_pct:.1f}% / Rp {foc_opex_var:,.0f}</b></span>). Pengetatan biaya umum & administrasi." if foc_opex_var > 0 else "(<span style='color:#16a34a;'><b>Efisiensi dibawah budget</b></span>).")
-
-box_4_net = f"<b>[4. PROFITABILITAS BERSIH / NET PROFIT]</b> Laba Bersih {month_1}: Rp {row_m1['Net_Profit_Actual']:,.0f} (NPM: <b>{npm_m1:.1f}%</b>). " + ("<span style='color:#b45309;'>🚨 Margin bersih tertekan (Ideal ≥ 10%). Tinjau efisiensi biaya.</span>" if npm_m1 < 10 else "<span style='color:#16a34a;'>✓ Tingkat profitabilitas dalam kondisi sehat.</span>")
-
-box_5_wc = f"<b>[5. MODAL KERJA & LIKUIDITAS / AR & CURRENT RATIO]</b> Piutang Dagang (AR) {month_1}: Rp {ar_m1:,.0f} ({ar_growth:+.1f}% vs {month_2}). Current Ratio: <b>{curr_r:.2f}x</b> " + ("(<span style='color:#16a34a;'><b>Likuiditas Sehat ≥ 1.5x</b></span>)." if curr_r >= 1.5 else "(<span style='color:#dc2626;'><b>Di bawah batas aman 1.5x</b></span>. Percepat penagihan piutang).")
-
-# RENDER ALL 5 BOXES
-st.markdown(f"<div class='rec-box-blue'>📈 {box_1_rev}</div>", unsafe_allow_html=True)
-st.markdown(f"<div class='rec-box-amber'>📦 {box_2_cogs}</div>", unsafe_allow_html=True)
-st.markdown(f"<div class='rec-box-purple'>📉 {box_3_opex}</div>", unsafe_allow_html=True)
-st.markdown(f"<div class='rec-box-emerald'>🎯 {box_4_net}</div>", unsafe_allow_html=True)
-st.markdown(f"<div class='rec-box-teal'>🏦 {box_5_wc}</div>", unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
+with tab_l4:
+    st.markdown("<div class='pbi-card'>", unsafe_allow_html=True)
+    st.markdown("### 🚨 Early Warning System (EWS) & Quality of Earnings")
+    
+    ews_alerts = []
+    if curr_ratio1 < 1.5: ews_alerts.append(("red", f"CRITICAL LIKUIDITAS: Current Ratio ({curr_ratio1:.2f}x) berada di bawah batas aman 1.5x."))
+    else: ews_alerts.append(("green", f"LIKUIDITAS AMAN: Current Ratio ({curr_ratio1:.2f}x) memenuhi standar kesehatan modal kerja."))
+    
+    if ar1 > ar2 * 1.15: ews_alerts.append(("red", f"RISIKO PIUTANG: Piutang (AR) melonjak +{((ar1-ar2)/ar2*100):.1f}% dibanding {month_2}. Potensi menekan cashflow."))
+    
+    if gpm1 < gpm2: ews_alerts.append(("amber", f"PENURUNAN MARGIN KOTOR: Gross Margin turun dari {gpm2:.1f}% menjadi {gpm1:.1f}%. Pembengkakan COGS."))
+    
+    if npm1 < 10: ews_alerts.append(("amber", f"MARGIN BERSIH TERTEKAN: Net Margin ({npm1:.1f}%) di bawah batas ideal 10%."))
+    
+    for cls, msg in ews_alerts:
+        st.markdown(f"<div class='ews-card-{cls}'>⚠️ {msg}</div>", unsafe_allow_html=True)
+        
+    st.markdown("<br>#### 📈 Trend Pergerakan Multi-Bulan (12 Bulan)", unsafe_allow_html=True)
+    fig_trend = px.line(df_year, x="Bulan", y=["Revenue_Actual", "Net_Profit_Actual", "Cash_Balance"], markers=True)
+    fig_trend.update_layout(height=320, template="plotly_white")
+    st.plotly_chart(fig_trend, use_container_width=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# 7. EXPORT OPTIONS
+# LEVEL 5: DECISION & MANAGEMENT EXECUTIVE DIRECTIVE
 # ==========================================
-st.markdown("<br>", unsafe_allow_html=True)
-st.markdown("### 📥 Download / Export Hasil Analisis")
+with tab_l5:
+    st.markdown("<div class='pbi-card'>", unsafe_allow_html=True)
+    st.markdown("### ⚙️ Decision Priority Matrix & Management Executive Directive")
+    
+    col_d1, col_d2 = st.columns([1.5, 1.3])
+    
+    with col_d1:
+        st.markdown("#### 🎯 Decision Priority Matrix")
+        matrix_data = [
+            {"Area": "Harga Pokok Penjualan (COGS)", "Impact": "Very High", "Urgency": "Critical", "Status": "🔴 CRITICAL", "Action Plan": "Audit efisiensi bahan baku & negosiasi supplier."},
+            {"Area": "Pengelolaan Piutang (AR)", "Impact": "High", "Urgency": "High", "Status": "🔴 CRITICAL", "Action Plan": "Intensifkan penagihan piutang >30 hari & ketat kriteria kredit."},
+            {"Area": "Target Revenue", "Impact": "High", "Urgency": "Medium", "Status": "🟡 HIGH", "Action Plan": "Evaluasi strategi sales dan dorong produk margin tinggi."},
+            {"Area": "Biaya Operasional (OpEx)", "Impact": "Medium", "Urgency": "Medium", "Status": "🟡 MEDIUM", "Action Plan": "Pengetatan perjalanan dinas dan beban administrasi."}
+        ]
+        st.table(pd.DataFrame(matrix_data))
 
-col_btn1, col_btn2 = st.columns(2)
-
-with col_btn1:
-    if st.button("📄 Convert & Download Dashboard to PDF", use_container_width=True):
-        st.components.v1.html(
-            """
-            <script>
-                window.parent.focus();
-                window.parent.print();
-            </script>
-            """,
-            height=0
+    with col_d2:
+        st.markdown("#### ⚡ What-If Sensitivity Simulation")
+        sim_cogs_eff = st.slider("Simulasi Efisiensi COGS (%)", 0.0, 10.0, 3.0, step=0.5)
+        sim_ar_coll = st.slider("Simulasi Collection Piutang AR (%)", 0.0, 30.0, 10.0, step=1.0)
+        
+        saved_cogs = cogs1 * (sim_cogs_eff / 100)
+        new_net = net1 + saved_cogs
+        new_npm = (new_net / rev1 * 100) if rev1 > 0 else 0
+        added_cash = ar1 * (sim_ar_coll / 100)
+        
+        st.success(f"💡 **Dampak Efisiensi COGS {sim_cogs_eff}%:** Menambah Net Profit sebesar **+Rp {saved_cogs:,.0f}** (Margin naik ke **{new_npm:.1f}%**).")
+        st.info(f"💡 **Dampak Collection AR {sim_ar_coll}%:** Menambah Cash Inflow sebesar **+Rp {added_cash:,.0f}**.")
+        
+    st.markdown("---")
+    # EYE-CATCHING MANAGEMENT DIRECTIVE CARD
+    st.markdown("#### 📝 Management Executive Directive & Approval Sign-off")
+    st.caption("Ketikkan instruksi atau arahan resmi CFO/Manajemen di bawah ini untuk ditampilkan secara menonjol:")
+    
+    col_n1, col_n2 = st.columns([1, 2.5])
+    
+    with col_n1:
+        note_priority = st.selectbox(
+            "Tingkat Urgensi Instruksi:",
+            ["URGENT (🔴 Red Alert)", "IMPORTANT (🟡 Gold Directive)", "INFO (🔵 General Notice)"],
+            index=1
         )
+        
+    with col_n2:
+        exec_notes = st.text_area(
+            "Catatan & Arahan Eksekutif Manajemen:",
+            value=f"1. Penurunan margin pada periode {month_1} dipengaruhi lonjakan biaya bahan baku pada divisi operasional.\n2. Tim Finance diinstruksikan mempercepat penagihan piutang sebelum akhir kuartal.",
+            height=90
+        )
+    
+    # RENDER DIRECTIVE BANNER DENGAN WARNA EYE-CATCHING PSIKOLOGIS
+    if "URGENT" in note_priority:
+        card_theme = "border-left: 6px solid #ef4444; background-color: #fef2f2; color: #991b1b;"
+        badge_theme = "background-color: #ef4444; color: white;"
+        priority_label = "🚨 DIREKSI / CFO INSTRUCTION: HIGH PRIORITY"
+    elif "IMPORTANT" in note_priority:
+        card_theme = "border-left: 6px solid #f59e0b; background-color: #fffbeb; color: #92400e;"
+        badge_theme = "background-color: #f59e0b; color: white;"
+        priority_label = "📣 OFFICIAL MANAGEMENT DIRECTIVE"
+    else:
+        card_theme = "border-left: 6px solid #0284c7; background-color: #f0f9ff; color: #0369a1;"
+        badge_theme = "background-color: #0284c7; color: white;"
+        priority_label = "📌 EXECUTIVE NOTICE & ROUTINE DIRECTION"
 
-with col_btn2:
+    formatted_notes = exec_notes.replace("\n", "<br>")
+    
+    st.markdown(f"""
+    <div style="padding: 18px 22px; border-radius: 12px; margin-top: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); {card_theme}">
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <span style="font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.05em; {badge_theme}">
+                {priority_label}
+            </span>
+            <span style="font-size: 0.8rem; font-weight: 600; margin-left: 10px; opacity: 0.8;">
+                Unit: {selected_div} | Periode: {month_1} {selected_year}
+            </span>
+        </div>
+        <div style="font-size: 1rem; line-height: 1.7; font-weight: 600;">
+            {formatted_notes}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# ==========================================
+# EXPORT OPTIONS
+# ==========================================
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("### 📥 Download / Export Analysis")
+
+cb1, cb2 = st.columns(2)
+with cb1:
+    if st.button("📄 Convert & Download Dashboard to PDF", use_container_width=True):
+        st.components.v1.html("<script>window.parent.focus(); window.parent.print();</script>", height=0)
+
+with cb2:
     def generate_excel_report():
         output = io.BytesIO()
         with pd.ExcelWriter(output, engine='openpyxl') as writer:
             export_df = pd.DataFrame([
-                {
-                    'Komponen Keuangan': name,
-                    f'Actual {month_1}': act1,
-                    f'Actual {month_2}': act2,
-                    f'Budget {month_1}': bud1,
-                    f'Budget {month_2}': bud2,
-                    'Var Bulan Focus (Rp)': act1 - bud1,
-                    'Var Bulan Focus (%)': f"{((act1 - bud1) / abs(bud1) * 100):.1f}%" if bud1 != 0 else "0%",
-                    'Var Actual MoM (Rp)': act1 - act2,
-                    'Var Actual MoM (%)': f"{((act1 - act2) / abs(act2) * 100):.1f}%" if act2 != 0 else "0%",
-                    'Var Budget MoM (Rp)': bud1 - bud2,
-                    'Var Budget MoM (%)': f"{((bud1 - bud2) / abs(bud2) * 100):.1f}%" if bud2 != 0 else "0%"
-                } for name, act1, act2, bud1, bud2 in components
+                {'Komponen Keuangan': 'Revenue', f'Actual {month_1}': rev1, f'Budget {month_1}': rev_bud1, f'Actual {month_2}': rev2},
+                {'Komponen Keuangan': 'COGS', f'Actual {month_1}': cogs1, f'Budget {month_1}': cogs_bud1, f'Actual {month_2}': cogs2},
+                {'Komponen Keuangan': 'Net Profit', f'Actual {month_1}': net1, f'Budget {month_1}': net_bud1, f'Actual {month_2}': net2},
             ])
             export_df.to_excel(writer, index=False, sheet_name='Komparasi_Laporan_Keuangan')
-            rec_df = pd.DataFrame({'Rekomendasi Manajemen': [box_1_rev, box_2_cogs, box_3_opex, box_4_net, box_5_wc]})
-            rec_df.to_excel(writer, index=False, sheet_name='Analisis_Rekomendasi')
+            notes_df = pd.DataFrame([{'Unit/Divisi': selected_div, 'Periode': f'{month_1} {selected_year}', 'Urgensi': note_priority, 'Catatan Eksekutif Manajemen': exec_notes}])
+            notes_df.to_excel(writer, index=False, sheet_name='Management_Directive')
         return output.getvalue()
 
     st.download_button(
         label="📊 Export Data Komparasi ke Excel (.xlsx)",
         data=generate_excel_report(),
-        file_name=f"Komparasi_Keuangan_{month_1}_vs_{month_2}_{selected_year}.xlsx",
+        file_name=f"Directive_Keuangan_{selected_div}_{month_1}_vs_{month_2}_{selected_year}.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         use_container_width=True
     )
